@@ -10,6 +10,8 @@ const Formulario = () => {
     sintomas: "",
   });
 
+  const [error, acutalizarError] = useState(false);
+
   const handleChange = (e) => {
     actualizarCita({
       ...cita,
@@ -19,10 +21,32 @@ const Formulario = () => {
 
   const { mascota, propietario, fecha, hora, sintomas } = cita;
 
+  //Enviar formulario
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    //Validacion
+
+    if (
+      mascota.trim() === "" ||
+      propietario.trim() === "" ||
+      fecha.trim() === "" ||
+      hora.trim() === "" ||
+      sintomas.trim() === ""
+    ) {
+      acutalizarError(true);
+      return;
+    }
+  };
   return (
     <Fragment>
       <h2>Crear cita</h2>
-      <form>
+
+      {error ? (
+        <p className="alerta-error">Todos los campos son abligatorios</p>
+      ) : null}
+      <form onSubmit={handleSubmit}>
         <label>Nombre Mascota</label>
         <input
           type="text"
